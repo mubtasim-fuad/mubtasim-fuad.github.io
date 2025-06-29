@@ -1,2 +1,2 @@
-# mubtasim-fuad.github.io
-# mubtasim-fuad.github.io Personal portfolio website
+# mubtasim-fuad.github.io 
+Personal portfolio website
