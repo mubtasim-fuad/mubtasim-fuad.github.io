@@ -1,48 +1,19 @@
-// Theme toggling functionality
-const themeToggle = document.getElementById('theme-toggle');
-const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
-// Mobile menu functionality
-const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-const navLinksContainer = document.querySelector('.nav-links-container');
+const menuButton = document.querySelector('.menu-toggle');
+const navigation = document.querySelector('.site-nav');
 
-// Toggle the mobile menu
-mobileMenuToggle.addEventListener('click', () => {
-    navLinksContainer.classList.toggle('active');
-});
-
-// Close the menu when clicking outside
-document.addEventListener('click', (event) => {
-    if (
-        !navLinksContainer.contains(event.target) &&
-        !mobileMenuToggle.contains(event.target)
-    ) {
-        navLinksContainer.classList.remove('active');
-    }
-});
-
-
-
-const getCurrentTheme = () => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-        return savedTheme;
-    }
-    return prefersDarkScheme.matches ? 'dark' : 'light';
-};
-
-const applyTheme = (theme) => {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-    const icon = themeToggle.querySelector('i');
-    icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
-};
-
-// Initialize theme
-applyTheme(getCurrentTheme());
-
-// Toggle on click
-themeToggle.addEventListener('click', () => {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-    applyTheme(newTheme);
-});
+if (menuButton && navigation) {
+  const closeMenu = () => {
+    navigation.classList.remove('open');
+    menuButton.setAttribute('aria-expanded', 'false');
+    menuButton.setAttribute('aria-label', 'Open menu');
+  };
+  menuButton.addEventListener('click', () => {
+    const isOpen = navigation.classList.toggle('open');
+    menuButton.setAttribute('aria-expanded', String(isOpen));
+    menuButton.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+  });
+  navigation.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') closeMenu();
+  });
+}
